@@ -1,13 +1,13 @@
+# --- Compatible con Python 3.13 ---
 import sys, types
 if 'cgi' not in sys.modules:
     sys.modules['cgi'] = types.ModuleType('cgi')
+    sys.modules['cgi'].parse_header = lambda x: ("text/plain", {})
+# ----------------------------------
+
 import streamlit as st
 from textblob import TextBlob
-from deep_translator import GoogleTranslator
-trans_text = GoogleTranslator(source='auto', target='en').translate(text1)
-
-
-translator = Translator()
+from deep_translator import GoogleTranslator  # ✅ reemplazo moderno
 
 # 🌟 Interfaz inspirada en Taylor Swift
 st.title('Taylor Analyzer 🎤✨')
@@ -28,8 +28,8 @@ with st.sidebar:
 with st.expander('Analiza la emoción de tu texto'):
     text1 = st.text_area('Escribe tu frase o verso:')
     if text1:
-        translation = translator.translate(text1, src="es", dest="en")
-        trans_text = translation.text
+        # ✅ traducimos solo cuando hay texto
+        trans_text = GoogleTranslator(source='auto', target='en').translate(text1)
         blob = TextBlob(trans_text)
 
         st.write('**Polaridad:**', round(blob.sentiment.polarity, 2))
