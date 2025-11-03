@@ -1,4 +1,3 @@
-
 import sys, types
 if 'cgi' not in sys.modules:
     sys.modules['cgi'] = types.ModuleType('cgi')
@@ -7,44 +6,45 @@ from textblob import TextBlob
 from googletrans import Translator
 
 translator = Translator()
-st.title('Uso de textblob')
 
-st.subheader("Por favor escribe en el campo de texto la frase que deseas analizar")
+# 🌟 Interfaz inspirada en Taylor Swift
+st.title('Taylor Analyzer 🎤✨')
+st.subheader("Escribe una frase o un fragmento de letra y descubre cómo Taylor la interpretaría emocionalmente 💌")
+
 with st.sidebar:
-               st.subheader("Polaridad y Subjetividad")
-               ("""
-                Polaridad: Indica si el sentimiento expresado en el texto es positivo, negativo o neutral. 
-                Su valor oscila entre -1 (muy negativo) y 1 (muy positivo), con 0 representando un sentimiento neutral.
-                
-               Subjetividad: Mide cuánto del contenido es subjetivo (opiniones, emociones, creencias) frente a objetivo
-               (hechos). Va de 0 a 1, donde 0 es completamente objetivo y 1 es completamente subjetivo.
+    st.subheader("💫 Polaridad y Subjetividad en el universo de Taylor")
+    st.markdown("""
+    **Polaridad** → Indica si la emoción es triste, nostálgica o esperanzadora,  
+    como cuando una canción pasa de *All Too Well* a *Shake It Off*.  
+    Su valor va de -1 (muy triste 💔) a 1 (muy feliz 💖).
 
-                 """
-               ) 
+    **Subjetividad** → Mide cuánto de lo que escribes es una historia personal o una reflexión objetiva.  
+    Va de 0 (hechos) a 1 (emociones puras).
+    """)
 
-
-with st.expander('Analizar Polaridad y Subjetividad en un texto'):
-    text1 = st.text_area('Escribe por favor: ')
+# 🎶 Análisis emocional tipo "Taylor"
+with st.expander('Analiza la emoción de tu texto'):
+    text1 = st.text_area('Escribe tu frase o verso:')
     if text1:
-
         translation = translator.translate(text1, src="es", dest="en")
         trans_text = translation.text
         blob = TextBlob(trans_text)
-        #blob = TextBlob(text1)
-       
-        
-        st.write('Polarity: ', round(blob.sentiment.polarity,2))
-        st.write('Subjectivity: ', round(blob.sentiment.subjectivity,2))
-        x=round(blob.sentiment.polarity,2)
-        if x >= 0.5:
-            st.write( 'Es un sentimiento Positivo 😊')
-        elif x <= -0.5:
-            st.write( 'Es un sentimiento Negativo 😔')
-        else:
-            st.write( 'Es un sentimiento Neutral 😐')
 
-with st.expander('Corrección en inglés'):
-       text2 = st.text_area('Escribe por favor: ',key='4')
-       if text2:
-          blob2=TextBlob(text2)
-          st.write((blob2.correct())) 
+        st.write('**Polaridad:**', round(blob.sentiment.polarity, 2))
+        st.write('**Subjetividad:**', round(blob.sentiment.subjectivity, 2))
+        x = round(blob.sentiment.polarity, 2)
+
+        if x >= 0.5:
+            st.success('✨ Suena a un verso alegre — energía *Lover*. 💕')
+        elif x <= -0.5:
+            st.error('💔 Tiene la vibra melancólica de *All Too Well*. 😢')
+        else:
+            st.info('😐 Neutral, como si fuera un puente esperando su emoción.')
+
+# ✍️ Corrección gramatical
+with st.expander('Reescribe tu letra en inglés con estilo perfecto 🎼'):
+    text2 = st.text_area('Escribe tu texto en inglés:', key='4')
+    if text2:
+        blob2 = TextBlob(text2)
+        st.write("**Versión corregida:**")
+        st.write(blob2.correct())
