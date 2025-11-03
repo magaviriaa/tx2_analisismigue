@@ -1,3 +1,7 @@
+
+import sys, types
+if 'cgi' not in sys.modules:
+    sys.modules['cgi'] = types.ModuleType('cgi')
 import streamlit as st
 from textblob import TextBlob
 from googletrans import Translator
